@@ -70,6 +70,13 @@ function reveal_initialize_script() {
 			viewDistance: <?php echo $settings['viewDistance'] ?>,
 			parallaxBackgroundImage: <?php echo json_encode( $settings['parallaxBackgroundImage'] ) ?>,
 			parallaxBackgroundSize: <?php echo json_encode( $settings['parallaxBackgroundSize'] ) ?>,
+			width: <?php echo $settings['width'] ?>,
+			height: <?php echo $settings['height'] ?>,
+			margin: <?php echo $settings['margin'] ?>,
+			minScale: <?php echo $settings['minScale'] ?>,
+			maxScale: <?php echo $settings['maxScale'] ?>,
+			rollingLinks: <?php echo $settings['rollingLinks'] ?>,
+			focusBodyOnPageVisiblityChange: <?php echo $settings['focusBodyOnPageVisiblityChange'] ?>,
 
 			// Optional libraries used to extend on reveal.js
 			dependencies: [
@@ -394,6 +401,51 @@ function reveal_settings() {
 				'description' => __( 'CSS syntax, e.g. "2100px 900px"', 'reveal' ),
 				'attributes' => array( 'style' => 'width: 200px' ),
 			) ),
+			'width' => new Fieldmanager_TextField( array(
+				'label' => __( 'Base Width', 'reveal' ),
+				'description' => __( 'The "normal" width of the presentation; aspect ratio will be preserved when the presentation is scaled to fit different resolutions', 'reveal' ),
+				'default_value' => '960',
+				'sanitize' => 'absint',
+				'attributes' => array( 'style' => 'width: 75px' ),
+			) ),
+			'height' => new Fieldmanager_TextField( array(
+				'label' => __( 'Base Height', 'reveal' ),
+				'description' => __( 'The "normal" height of the presentation; aspect ratio will be preserved when the presentation is scaled to fit different resolutions', 'reveal' ),
+				'default_value' => '700',
+				'sanitize' => 'absint',
+				'attributes' => array( 'style' => 'width: 75px' ),
+			) ),
+			'margin' => new Fieldmanager_TextField( array(
+				'label' => __( 'Margin', 'reveal' ),
+				'description' => __( 'Factor of the display size that should remain empty around the content', 'reveal' ),
+				'default_value' => '0.1',
+				'sanitize' => 'floatval',
+				'attributes' => array( 'style' => 'width: 75px' ),
+			) ),
+			'minScale' => new Fieldmanager_TextField( array(
+				'label' => __( 'Bounds for smallest possible scale to apply to content', 'reveal' ),
+				'default_value' => '0.1',
+				'sanitize' => 'floatval',
+				'attributes' => array( 'style' => 'width: 75px' ),
+			) ),
+			'maxScale' => new Fieldmanager_TextField( array(
+				'label' => __( 'Bounds for largest possible scale to apply to content', 'reveal' ),
+				'default_value' => '0.1',
+				'sanitize' => 'floatval',
+				'attributes' => array( 'style' => 'width: 75px' ),
+			) ),
+			'rollingLinks' => new Fieldmanager_Checkbox( array(
+				'label' => __( 'Apply a 3D roll to links on hover', 'reveal' ),
+				'checked_value' => 'true',
+				'unchecked_value' => 'false',
+				'default_value' => 'false'
+			) ),
+			'focusBodyOnPageVisiblityChange' => new Fieldmanager_Checkbox( array(
+				'label' => __( 'Focus body when page changes visiblity to ensure keyboard shortcuts work', 'reveal' ),
+				'checked_value' => 'true',
+				'unchecked_value' => 'false',
+				'default_value' => 'true'
+			) ),
 		)
 	) );
 	$fm->activate_submenu_page();
@@ -407,24 +459,59 @@ function reveal_get_settings() {
 
 	$reveal_settings = get_option( 'reveal_settings', array() );
 
+	$non_boolean_keys = array( 'theme',
+		'autoSlide',
+		'transition',
+		'transitionSpeed',
+		'backgroundTransition',
+		'viewDistance',
+		'parallaxBackgroundImage',
+		'parallaxBackgroundSize',
+		'width',
+		'height',
+		'margin',
+		'minScale',
+		'maxScale',
+	);
+
+	// Sanitize boolean values
 	foreach ( $reveal_settings as $key => $value ) {
-		if ( ! in_array( $key, array( 'theme', 'autoSlide', 'transition', 'transitionSpeed', 'backgroundTransition', 'viewDistance', 'parallaxBackgroundImage', 'parallaxBackgroundSize' ) ) ) {
+		if ( ! in_array( $key, $non_boolean_keys ) ) {
 			if ( $value !== 'true' && $value !== 'false' ) {
 				unset( $reveal_settings[ $key ] );
 			}
 		}
 	}
 
+	// Sanitize numeric values
 	if ( isset( $reveal_settings['autoSlide'] ) ) {
 		$reveal_settings['autoSlide'] = absint( $reveal_settings['autoSlide'] );
 	}
 	if ( isset( $reveal_settings['viewDistance'] ) ) {
 		$reveal_settings['viewDistance'] = absint( $reveal_settings['viewDistance'] );
 	}
+	if ( isset( $reveal_settings['width'] ) ) {
+		$reveal_settings['width'] = absint( $reveal_settings['width'] );
+	}
+	if ( isset( $reveal_settings['height'] ) ) {
+		$reveal_settings['height'] = absint( $reveal_settings['height'] );
+	}
+	if ( isset( $reveal_settings['margin'] ) ) {
+		$reveal_settings['margin'] = floatval( $reveal_settings['margin'] );
+	}
+	if ( isset( $reveal_settings['minScale'] ) ) {
+		$reveal_settings['minScale'] = floatval( $reveal_settings['minScale'] );
+	}
+	if ( isset( $reveal_settings['maxScale'] ) ) {
+		$reveal_settings['maxScale'] = floatval( $reveal_settings['maxScale'] );
+	}
+
+	// Convert attachment id to attachment url
 	if ( ! empty( $reveal_settings['parallaxBackgroundImage'] ) ) {
 		$reveal_settings['parallaxBackgroundImage'] = wp_get_attachment_url( $reveal_settings['parallaxBackgroundImage'] );
 	}
 
+	// Sanitize dropdown values
 	if ( isset( $reveal_settings['transition'] ) && ! in_array( $reveal_settings['transition'], array( 'default', 'cube', 'page', 'concave', 'zoom', 'linear', 'fade', 'none' ) ) ) {
 		$reveal_settings['transition'] = 'default';
 	}
@@ -435,31 +522,39 @@ function reveal_get_settings() {
 		$reveal_settings['backgroundTransition'] = 'default';
 	}
 
+	// Fill the rest with defaults
 	$reveal_settings = wp_parse_args( $reveal_settings, array(
-		'theme'                   => 'default',
-		'controls'                => 'true',
-		'progress'                => 'true',
-		'slideNumber'             => 'false',
-		'history'                 => 'false',
-		'keyboard'                => 'true',
-		'overview'                => 'true',
-		'center'                  => 'true',
-		'touch'                   => 'true',
-		'loop'                    => 'false',
-		'rtl'                     => 'false',
-		'fragments'               => 'true',
-		'embedded'                => 'false',
-		'autoSlide'               => 0,
-		'autoSlideStoppable'      => 'true',
-		'mouseWheel'              => 'false',
-		'hideAddressBar'          => 'true',
-		'previewLinks'            => 'false',
-		'transition'              => 'default',
-		'transitionSpeed'         => 'default',
-		'backgroundTransition'    => 'default',
-		'viewDistance'            => 3,
-		'parallaxBackgroundImage' => '',
-		'parallaxBackgroundSize'  => '',
+		'theme'                          => 'default',
+		'controls'                       => 'true',
+		'progress'                       => 'true',
+		'slideNumber'                    => 'false',
+		'history'                        => 'false',
+		'keyboard'                       => 'true',
+		'overview'                       => 'true',
+		'center'                         => 'true',
+		'touch'                          => 'true',
+		'loop'                           => 'false',
+		'rtl'                            => 'false',
+		'fragments'                      => 'true',
+		'embedded'                       => 'false',
+		'autoSlide'                      => 0,
+		'autoSlideStoppable'             => 'true',
+		'mouseWheel'                     => 'false',
+		'hideAddressBar'                 => 'true',
+		'previewLinks'                   => 'false',
+		'transition'                     => 'default',
+		'transitionSpeed'                => 'default',
+		'backgroundTransition'           => 'default',
+		'viewDistance'                   => 3,
+		'parallaxBackgroundImage'        => '',
+		'parallaxBackgroundSize'         => '',
+		'width'                          => 960,
+		'height'                         => 700,
+		'margin'                         => 0.1,
+		'minScale'                       => 0.2,
+		'maxScale'                       => 1.0,
+		'rollingLinks'                   => 'false',
+		'focusBodyOnPageVisiblityChange' => 'true',
 	) );
 
 	return $reveal_settings;
