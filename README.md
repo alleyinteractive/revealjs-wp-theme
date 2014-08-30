@@ -41,6 +41,8 @@ custom theme URL.
 	} );
 	```
 
+	However, you can change most of the settings in **Appearance &rarr; reveal.js Settings**.
+
 ### Filters
 
 * `reveal_theme_url`: The URL to the theme CSS you'd like to use
@@ -58,7 +60,7 @@ custom theme URL.
 		'notes'     => "{ src: '" . get_template_directory_uri() . "/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }",
 	)
 	```
-	
+
 * `reveal_remove_posts`: By default, the 'post' post type is removed. You can disable this by
 	calling `add_filter( 'reveal_remove_posts', '__return_false' );` in your child theme.
 * `reveal_remove_categories`: By default, the 'category' taxonomy is removed. You can disable this by
