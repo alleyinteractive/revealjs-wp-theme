@@ -40,18 +40,36 @@ function reveal_flush_rewrites() {
 }
 
 function reveal_initialize_script() {
+	$settings = reveal_get_settings();
 	?>
 	<script>
 		// Full list of configuration options available here:
 		// https://github.com/hakimel/reveal.js#configuration
 		var reveal_config = {
-			controls: true,
-			progress: true,
-			history: true,
-			center: true,
-
-			theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
-			transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+			theme: <?php echo json_encode( $settings['theme'] ) ?>,
+			controls: <?php echo $settings['controls'] ?>,
+			progress: <?php echo $settings['progress'] ?>,
+			slideNumber: <?php echo $settings['slideNumber'] ?>,
+			history: <?php echo $settings['history'] ?>,
+			keyboard: <?php echo $settings['keyboard'] ?>,
+			overview: <?php echo $settings['overview'] ?>,
+			center: <?php echo $settings['center'] ?>,
+			touch: <?php echo $settings['touch'] ?>,
+			loop: <?php echo $settings['loop'] ?>,
+			rtl: <?php echo $settings['rtl'] ?>,
+			fragments: <?php echo $settings['fragments'] ?>,
+			embedded: <?php echo $settings['embedded'] ?>,
+			autoSlide: <?php echo $settings['autoSlide'] ?>,
+			autoSlideStoppable: <?php echo $settings['autoSlideStoppable'] ?>,
+			mouseWheel: <?php echo $settings['mouseWheel'] ?>,
+			hideAddressBar: <?php echo $settings['hideAddressBar'] ?>,
+			previewLinks: <?php echo $settings['previewLinks'] ?>,
+			transition: <?php echo json_encode( $settings['transition'] ) ?>,
+			transitionSpeed: <?php echo json_encode( $settings['transitionSpeed'] ) ?>,
+			backgroundTransition: <?php echo json_encode( $settings['backgroundTransition'] ) ?>,
+			viewDistance: <?php echo $settings['viewDistance'] ?>,
+			parallaxBackgroundImage: <?php echo json_encode( $settings['parallaxBackgroundImage'] ) ?>,
+			parallaxBackgroundSize: <?php echo json_encode( $settings['parallaxBackgroundSize'] ) ?>,
 
 			// Optional libraries used to extend on reveal.js
 			dependencies: [
@@ -209,7 +227,7 @@ function reveal_settings() {
 		'name' => 'reveal_settings',
 		'children' => array(
 			'theme' => new Fieldmanager_Select( array(
-				'label' => __( 'Theme', 'reveal' ),
+				'label' => __( 'Select Theme', 'reveal' ),
 				'options' => array(
 					'default',
 					'beige',
@@ -221,17 +239,230 @@ function reveal_settings() {
 					'sky',
 					'solarized',
 				)
-			) )
+			) ),
+			'controls' => new Fieldmanager_Checkbox( array(
+				'label' => __( 'Display controls in the bottom right corner', 'reveal' ),
+				'checked_value' => 'true',
+				'unchecked_value' => 'false',
+				'default_value' => 'true'
+			) ),
+			'progress' => new Fieldmanager_Checkbox( array(
+				'label' => __( 'Display a presentation progress bar', 'reveal' ),
+				'checked_value' => 'true',
+				'unchecked_value' => 'false',
+				'default_value' => 'true'
+			) ),
+			'slideNumber' => new Fieldmanager_Checkbox( array(
+				'label' => __( 'Display the page number of the current slide', 'reveal' ),
+				'checked_value' => 'true',
+				'unchecked_value' => 'false',
+				'default_value' => 'false'
+			) ),
+			'history' => new Fieldmanager_Checkbox( array(
+				'label' => __( 'Push each slide change to the browser history', 'reveal' ),
+				'checked_value' => 'true',
+				'unchecked_value' => 'false',
+				'default_value' => 'false'
+			) ),
+			'keyboard' => new Fieldmanager_Checkbox( array(
+				'label' => __( 'Enable keyboard shortcuts for navigation', 'reveal' ),
+				'checked_value' => 'true',
+				'unchecked_value' => 'false',
+				'default_value' => 'true'
+			) ),
+			'overview' => new Fieldmanager_Checkbox( array(
+				'label' => __( 'Enable the slide overview mode', 'reveal' ),
+				'checked_value' => 'true',
+				'unchecked_value' => 'false',
+				'default_value' => 'true'
+			) ),
+			'center' => new Fieldmanager_Checkbox( array(
+				'label' => __( 'Vertically center slides', 'reveal' ),
+				'checked_value' => 'true',
+				'unchecked_value' => 'false',
+				'default_value' => 'true'
+			) ),
+			'touch' => new Fieldmanager_Checkbox( array(
+				'label' => __( 'Enable touch navigation on devices with touch input', 'reveal' ),
+				'checked_value' => 'true',
+				'unchecked_value' => 'false',
+				'default_value' => 'true'
+			) ),
+			'loop' => new Fieldmanager_Checkbox( array(
+				'label' => __( 'Loop the presentation', 'reveal' ),
+				'checked_value' => 'true',
+				'unchecked_value' => 'false',
+				'default_value' => 'false'
+			) ),
+			'rtl' => new Fieldmanager_Checkbox( array(
+				'label' => __( 'Change the presentation direction to be RTL', 'reveal' ),
+				'checked_value' => 'true',
+				'unchecked_value' => 'false',
+				'default_value' => 'false'
+			) ),
+			'fragments' => new Fieldmanager_Checkbox( array(
+				'label' => __( 'Enable fragments', 'reveal' ),
+				'checked_value' => 'true',
+				'unchecked_value' => 'false',
+				'default_value' => 'true'
+			) ),
+			'embedded' => new Fieldmanager_Checkbox( array(
+				'label' => __( 'Run in embed mode', 'reveal' ),
+				'description' => __( 'Flags if the presentation is running in an embedded mode, i.e. contained within a limited portion of the screen', 'reveal' ),
+				'checked_value' => 'true',
+				'unchecked_value' => 'false',
+				'default_value' => 'false'
+			) ),
+			'autoSlide' => new Fieldmanager_TextField( array(
+				'label' => __( 'Number of milliseconds between automatically proceeding to the next slide', 'reveal' ),
+				'description' => __( 'Disabled when set to 0, this value can be overwritten by using a data-autoslide attribute on your slides', 'reveal' ),
+				'sanitize' => 'absint',
+				'attributes' => array( 'style' => 'width: 75px' ),
+				'default_value' => '0'
+			) ),
+			'autoSlideStoppable' => new Fieldmanager_Checkbox( array(
+				'label' => __( 'Stop auto-sliding after user input', 'reveal' ),
+				'checked_value' => 'true',
+				'unchecked_value' => 'false',
+				'default_value' => 'true'
+			) ),
+			'mouseWheel' => new Fieldmanager_Checkbox( array(
+				'label' => __( 'Enable slide navigation via mouse wheel', 'reveal' ),
+				'checked_value' => 'true',
+				'unchecked_value' => 'false',
+				'default_value' => 'false'
+			) ),
+			'hideAddressBar' => new Fieldmanager_Checkbox( array(
+				'label' => __( 'Hide the address bar on mobile devices', 'reveal' ),
+				'checked_value' => 'true',
+				'unchecked_value' => 'false',
+				'default_value' => 'true'
+			) ),
+			'previewLinks' => new Fieldmanager_Checkbox( array(
+				'label' => __( 'Open links in an iframe preview overlay', 'reveal' ),
+				'checked_value' => 'true',
+				'unchecked_value' => 'false',
+				'default_value' => 'false'
+			) ),
+			'transition' => new Fieldmanager_Select( array(
+				'label' => __( 'Transition style', 'reveal' ),
+				'options' => array(
+					'default',
+					'cube',
+					'page',
+					'concave',
+					'zoom',
+					'linear',
+					'fade',
+					'none',
+				)
+			) ),
+			'transitionSpeed' => new Fieldmanager_Select( array(
+				'label' => __( 'Transition speed', 'reveal' ),
+				'options' => array(
+					'default',
+					'fast',
+					'slow',
+				)
+			) ),
+			'backgroundTransition' => new Fieldmanager_Select( array(
+				'label' => __( 'Transition style for full page slide backgrounds', 'reveal' ),
+				'options' => array(
+					'default',
+					'none',
+					'slide',
+					'concave',
+					'convex',
+					'zoom',
+				)
+			) ),
+			'viewDistance' => new Fieldmanager_TextField( array(
+				'label' => __( 'Number of slides away from the current that are visible', 'reveal' ),
+				'default_value' => '3',
+				'sanitize' => 'absint',
+				'attributes' => array( 'style' => 'width: 75px' ),
+			) ),
+			'parallaxBackgroundImage' => new Fieldmanager_Media( array(
+				'label' => __( 'Parallax background image', 'reveal' ),
+				'preview_size'       => 'medium',
+				'button_label'       => __( 'Add Image', 'reveal' ),
+				'modal_button_label' => __( 'Select Image', 'reveal' ),
+				'modal_title'        => __( 'Parallax Background Image', 'reveal' ),
+			) ),
+			'parallaxBackgroundSize' => new Fieldmanager_TextField( array(
+				'label' => __( 'Parallax background size', 'reveal' ),
+				'description' => __( 'CSS syntax, e.g. "2100px 900px"', 'reveal' ),
+				'attributes' => array( 'style' => 'width: 200px' ),
+			) ),
 		)
 	) );
 	$fm->activate_submenu_page();
 }
 
 function reveal_get_settings() {
-	$settings = get_option( 'reveal_settings', array() );
-	return wp_parse_args( $settings, array(
-		'theme' => 'default'
+	static $reveal_settings;
+	if ( ! empty( $reveal_settings ) ) {
+		return $reveal_settings;
+	}
+
+	$reveal_settings = get_option( 'reveal_settings', array() );
+
+	foreach ( $reveal_settings as $key => $value ) {
+		if ( ! in_array( $key, array( 'theme', 'autoSlide', 'transition', 'transitionSpeed', 'backgroundTransition', 'viewDistance', 'parallaxBackgroundImage', 'parallaxBackgroundSize' ) ) ) {
+			if ( $value !== 'true' && $value !== 'false' ) {
+				unset( $reveal_settings[ $key ] );
+			}
+		}
+	}
+
+	if ( isset( $reveal_settings['autoSlide'] ) ) {
+		$reveal_settings['autoSlide'] = absint( $reveal_settings['autoSlide'] );
+	}
+	if ( isset( $reveal_settings['viewDistance'] ) ) {
+		$reveal_settings['viewDistance'] = absint( $reveal_settings['viewDistance'] );
+	}
+	if ( ! empty( $reveal_settings['parallaxBackgroundImage'] ) ) {
+		$reveal_settings['parallaxBackgroundImage'] = wp_get_attachment_url( $reveal_settings['parallaxBackgroundImage'] );
+	}
+
+	if ( isset( $reveal_settings['transition'] ) && ! in_array( $reveal_settings['transition'], array( 'default', 'cube', 'page', 'concave', 'zoom', 'linear', 'fade', 'none' ) ) ) {
+		$reveal_settings['transition'] = 'default';
+	}
+	if ( isset( $reveal_settings['transitionSpeed'] ) && ! in_array( $reveal_settings['transitionSpeed'], array( 'default', 'fast', 'slow' ) ) ) {
+		$reveal_settings['transitionSpeed'] = 'default';
+	}
+	if ( isset( $reveal_settings['backgroundTransition'] ) && ! in_array( $reveal_settings['backgroundTransition'], array( 'default', 'none', 'slide', 'concave', 'convex', 'zoom' ) ) ) {
+		$reveal_settings['backgroundTransition'] = 'default';
+	}
+
+	$reveal_settings = wp_parse_args( $reveal_settings, array(
+		'theme'                   => 'default',
+		'controls'                => 'true',
+		'progress'                => 'true',
+		'slideNumber'             => 'false',
+		'history'                 => 'false',
+		'keyboard'                => 'true',
+		'overview'                => 'true',
+		'center'                  => 'true',
+		'touch'                   => 'true',
+		'loop'                    => 'false',
+		'rtl'                     => 'false',
+		'fragments'               => 'true',
+		'embedded'                => 'false',
+		'autoSlide'               => 0,
+		'autoSlideStoppable'      => 'true',
+		'mouseWheel'              => 'false',
+		'hideAddressBar'          => 'true',
+		'previewLinks'            => 'false',
+		'transition'              => 'default',
+		'transitionSpeed'         => 'default',
+		'backgroundTransition'    => 'default',
+		'viewDistance'            => 3,
+		'parallaxBackgroundImage' => '',
+		'parallaxBackgroundSize'  => '',
 	) );
+
+	return $reveal_settings;
 }
 
 function reveal_tiny_mce_before_init( $options ) {
