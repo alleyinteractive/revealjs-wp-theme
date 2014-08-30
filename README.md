@@ -7,7 +7,8 @@ Power your reveal.js presentation with WordPress
 1. Check this out in your wp-content/themes/ directory
 2. Activate it as you would any other theme
 3. Install the [Fieldmanager](https://github.com/alleyinteractive/wordpress-fieldmanager) plugin and activate it
-4. Start making slides!
+4. Customize your presentation in **Appearance &rarr; reveal.js Settings**
+5. Start making slides!
 
 ## Customizing the theme
 
