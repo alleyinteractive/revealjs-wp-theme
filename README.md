@@ -1,5 +1,7 @@
 # reveal.js for WordPress
 
+Power your reveal.js presentation with WordPress
+
 ## Installation Instructions
 
 1. Check this out in your wp-content/themes/ directory
@@ -29,6 +31,7 @@ custom theme URL.
 * `reveal_initialize`: Fires before `Reveal.initialize()` is called. This theme defines a
 	javascript variable `reveal_config` which is the object passed to `Reveal.initialize()`.
 	Using this variable, you can manipualte any config value. For instance:
+
 	```php
 	add_action( 'reveal_initialize', function(){
 		?>
@@ -44,6 +47,7 @@ custom theme URL.
 * `reveal_default_dependencies`: You can manipulate the reveal dependencies by modifying
 	`reveal_config.dependencies` using the `reveal_initialize` action, but this filter is a
 	bit easier. This filter passes the following array, which you can manipualte as needed:
+
 	```php
 	array(
 		'classList' => "{ src: '" . get_template_directory_uri() . "/lib/js/classList.js', condition: function() { return !document.body.classList; } }",
@@ -54,6 +58,7 @@ custom theme URL.
 		'notes'     => "{ src: '" . get_template_directory_uri() . "/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }",
 	)
 	```
+	
 * `reveal_remove_posts`: By default, the 'post' post type is removed. You can disable this by
 	calling `add_filter( 'reveal_remove_posts', '__return_false' );` in your child theme.
 * `reveal_remove_categories`: By default, the 'category' taxonomy is removed. You can disable this by
