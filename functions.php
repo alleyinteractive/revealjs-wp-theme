@@ -76,9 +76,9 @@ function reveal_initialize_script() {
 			parallaxBackgroundSize: <?php echo json_encode( $settings['parallaxBackgroundSize'] ) ?>,
 			width: <?php echo $settings['width'] ?>,
 			height: <?php echo $settings['height'] ?>,
-			margin: <?php echo $settings['margin'] ?>,
-			minScale: <?php echo $settings['minScale'] ?>,
-			maxScale: <?php echo $settings['maxScale'] ?>,
+			margin: <?php printf( '%0.1f', $settings['margin'] ) ?>,
+			minScale: <?php printf( '%0.1f', $settings['minScale'] ) ?>,
+			maxScale: <?php printf( '%0.1f', $settings['maxScale'] ) ?>,
 			rollingLinks: <?php echo $settings['rollingLinks'] ?>,
 			focusBodyOnPageVisiblityChange: <?php echo $settings['focusBodyOnPageVisiblityChange'] ?>,
 
@@ -404,13 +404,13 @@ function reveal_settings() {
 			) ),
 			'minScale' => new Fieldmanager_TextField( array(
 				'label' => __( 'Bounds for smallest possible scale to apply to content', 'reveal' ),
-				'default_value' => '0.1',
+				'default_value' => '0.2',
 				'sanitize' => 'floatval',
 				'attributes' => array( 'style' => 'width: 75px' ),
 			) ),
 			'maxScale' => new Fieldmanager_TextField( array(
 				'label' => __( 'Bounds for largest possible scale to apply to content', 'reveal' ),
-				'default_value' => '0.1',
+				'default_value' => '1.0',
 				'sanitize' => 'floatval',
 				'attributes' => array( 'style' => 'width: 75px' ),
 			) ),
