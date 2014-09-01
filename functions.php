@@ -83,8 +83,6 @@ function reveal_initialize_script() {
 				<?php
 				echo implode( ",\n", apply_filters( 'reveal_default_dependencies', array(
 					'classList' => "{ src: '" . get_template_directory_uri() . "/lib/js/classList.js', condition: function() { return !document.body.classList; } }",
-					'marked'    => "{ src: '" . get_template_directory_uri() . "/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } }",
-					'markdown'  => "{ src: '" . get_template_directory_uri() . "/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } }",
 					'highlight' => "{ src: '" . get_template_directory_uri() . "/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }",
 					'zoom'      => "{ src: '" . get_template_directory_uri() . "/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } }",
 					'notes'     => "{ src: '" . get_template_directory_uri() . "/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }",
