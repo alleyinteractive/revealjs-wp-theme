@@ -7,10 +7,11 @@ function reveal_setup_theme() {
 	$settings = reveal_get_settings();
 
 	add_action( 'init', 'reveal_post_types' );
-	add_action( 'init', 'reveal_remove_default_objects' );
+
 	add_action( 'fm_post_slide', 'reveal_slides' );
 	add_action( 'fm_submenu_reveal_settings', 'reveal_settings' );
 	add_action( 'admin_menu', 'reveal_admin_menu' );
+	add_action( 'wp_before_admin_bar_render', 'reveal_remove_admin_bar_links' );
 	add_filter( 'wp_title', 'reveal_wp_title', 10, 2 );
 
 	add_filter( 'show_admin_bar', '__return_false' );
@@ -134,44 +135,22 @@ function reveal_post_types() {
 	) );
 }
 
-function reveal_remove_default_objects() {
-	global $wp_post_types, $wp_taxonomies;
-	// Remove core post types and taxonomies
-	if ( apply_filters( 'reveal_remove_posts', true ) && isset( $wp_post_types['post'] ) ) {
-		unset( $wp_post_types['post'] );
-	}
+function reveal_admin_menu() {
+	// You can add `remove_action( 'admin_menu', 'reveal_admin_menu' );` to
+	// your child theme if you don't want these removed
 
-	if ( apply_filters( 'reveal_remove_categories', true ) && isset( $wp_taxonomies['category'] ) ) {
-		unset( $wp_taxonomies['category'] );
-	}
-
-	if ( apply_filters( 'reveal_remove_tags', true ) && isset( $wp_taxonomies['post_tag'] ) ) {
-		unset( $wp_taxonomies['post_tag'] );
-	}
-
-	if ( apply_filters( 'reveal_remove_link_categories', true ) && isset( $wp_taxonomies['link_category'] ) ) {
-		unset( $wp_taxonomies['link_category'] );
-	}
-
-	if ( apply_filters( 'reveal_remove_post_formats', true ) && isset( $wp_taxonomies['post_format'] ) ) {
-		unset( $wp_taxonomies['post_format'] );
-	}
+	remove_menu_page( 'edit.php' );
+	remove_submenu_page( 'edit.php', 'edit-tags.php?taxonomy=category' );
+	remove_submenu_page( 'edit.php', 'edit-tags.php?taxonomy=post_tag' );
+	remove_menu_page( 'edit-comments.php' );
 }
 
-function reveal_admin_menu() {
-	if ( apply_filters( 'reveal_remove_posts', true ) ) {
-		remove_menu_page( 'edit.php' );
-	} else {
-		if ( apply_filters( 'reveal_remove_categories', true ) ) {
-			remove_submenu_page( 'edit.php', 'edit-tags.php?taxonomy=category' );
-		}
-		if ( apply_filters( 'reveal_remove_tags', true ) ) {
-			remove_submenu_page( 'edit.php', 'edit-tags.php?taxonomy=post_tag' );
-		}
-	}
-	if ( apply_filters( 'reveal_remove_comments', true ) ) {
-		remove_menu_page( 'edit-comments.php' );
-	}
+function reveal_remove_admin_bar_links() {
+	// You can add `remove_action( 'wp_before_admin_bar_render', 'reveal_remove_admin_bar_links' );`
+	// to your child theme if you don't want these removed
+
+	global $wp_admin_bar;
+	$wp_admin_bar->remove_node( 'new-post' );
 }
 
 function reveal_slides() {

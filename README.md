@@ -60,19 +60,6 @@ custom theme URL.
 	)
 	```
 
-* `reveal_remove_posts`: By default, the 'post' post type is removed. You can disable this by
-	calling `add_filter( 'reveal_remove_posts', '__return_false' );` in your child theme.
-* `reveal_remove_categories`: By default, the 'category' taxonomy is removed. You can disable this by
-	calling `add_filter( 'reveal_remove_categories', '__return_false' );` in your child theme.
-* `reveal_remove_tags`: By default, the 'post_tag' taxonomy is removed. You can disable this by
-	calling `add_filter( 'reveal_remove_tags', '__return_false' );` in your child theme.
-* `reveal_remove_link_categories`: By default, the 'link_category' taxonomy is removed. You can disable this by
-	calling `add_filter( 'reveal_remove_link_categories', '__return_false' );` in your child theme.
-* `reveal_remove_post_formats`: By default, the 'post_format' taxonomy is removed. You can disable this by
-	calling `add_filter( 'reveal_remove_post_formats', '__return_false' );` in your child theme.
-* `reveal_remove_comments`: By default, the "comments" menu item is removed. You can disable this by
-	calling `add_filter( 'reveal_remove_comments', '__return_false' );` in your child theme.
-
 ### Other Customizations
 
 Using a child theme, your options for customization are limitless. Everything in the parent theme can
@@ -87,7 +74,6 @@ A framework for easily creating beautiful presentations using HTML. [Check out t
 - [reveal.js on GitHub](https://github.com/hakimel/reveal.js/)
 - [reveal.js Examples](https://github.com/hakimel/reveal.js/wiki/Example-Presentations): Presentations created with reveal.js, add your own!
 - [reveal.js Browser Support](https://github.com/hakimel/reveal.js/wiki/Browser-Support): Explanation of browser support and fallbacks.
-
 
 
 ## License
