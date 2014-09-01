@@ -4,8 +4,6 @@ define( 'REVEAL_VERSION', '2.6.2' );
 define( 'REVEAL_PARENT_THEME_URI', get_template_directory_uri() );
 
 function reveal_setup_theme() {
-	$settings = reveal_get_settings();
-
 	add_action( 'init', 'reveal_post_types' );
 
 	add_action( 'fm_post_slide', 'reveal_slides' );
@@ -19,15 +17,9 @@ function reveal_setup_theme() {
 	add_action( 'switch_theme', 'reveal_flush_rewrites' );
 
 	if ( ! is_admin() ) {
+		add_action( 'wp_enqueue_scripts', 'reveal_enqueue_scripts_and_styles' );
 		add_action( 'wp_footer', 'reveal_initialize_script', 20 );
 		add_action( 'pre_get_posts', 'reveal_homepage_slides' );
-
-		wp_enqueue_style( 'reveal-core-css', REVEAL_PARENT_THEME_URI . '/css/reveal.min.css', array(), REVEAL_VERSION );
-		wp_enqueue_style( 'reveal-theme-css', apply_filters( 'reveal_theme_url', REVEAL_PARENT_THEME_URI . '/css/theme/' . $settings['theme'] . '.css' ), array(), REVEAL_VERSION );
-		wp_enqueue_style( 'reveal-zenburn-css', REVEAL_PARENT_THEME_URI . '/lib/css/zenburn.css', array(), REVEAL_VERSION );
-
-		wp_enqueue_script( 'reveal-head-js', REVEAL_PARENT_THEME_URI . '/lib/js/head.min.js', array(), REVEAL_VERSION, true );
-		wp_enqueue_script( 'reveal-core-js', REVEAL_PARENT_THEME_URI . '/js/reveal.min.js', array(), REVEAL_VERSION, true );
 	}
 
 	if ( function_exists( 'fm_register_submenu_page' ) ) {
@@ -38,6 +30,17 @@ add_action( 'after_setup_theme', 'reveal_setup_theme' );
 
 function reveal_flush_rewrites() {
 	delete_option( 'rewrite_rules' );
+}
+
+function reveal_enqueue_scripts_and_styles() {
+	$settings = reveal_get_settings();
+
+	wp_enqueue_style( 'reveal-core-css', REVEAL_PARENT_THEME_URI . '/css/reveal.min.css', array(), REVEAL_VERSION );
+	wp_enqueue_style( 'reveal-theme-css', apply_filters( 'reveal_theme_url', REVEAL_PARENT_THEME_URI . '/css/theme/' . $settings['theme'] . '.css' ), array(), REVEAL_VERSION );
+	wp_enqueue_style( 'reveal-zenburn-css', REVEAL_PARENT_THEME_URI . '/lib/css/zenburn.css', array(), REVEAL_VERSION );
+
+	wp_enqueue_script( 'reveal-head-js', REVEAL_PARENT_THEME_URI . '/lib/js/head.min.js', array(), REVEAL_VERSION, true );
+	wp_enqueue_script( 'reveal-core-js', REVEAL_PARENT_THEME_URI . '/js/reveal.min.js', array(), REVEAL_VERSION, true );
 }
 
 function reveal_initialize_script() {
