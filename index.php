@@ -15,7 +15,11 @@
 				<h2><?php echo esc_html( $slide['title'] ) ?></h2>
 			<?php endif ?>
 
-				<?php echo reveal_process_html_field( $slide['content'] ) ?>
+				<?php
+				if ( ! empty( $slide['content'] ) ) {
+					echo reveal_process_html_field( $slide['content'] );
+				}
+				?>
 
 				<?php if ( ! empty( $slide['notes'] ) ) : ?>
 					<aside class="notes">
