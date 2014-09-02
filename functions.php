@@ -507,7 +507,7 @@ function reveal_get_settings() {
 
 	// Convert attachment id to attachment url
 	if ( ! empty( $reveal_settings['parallaxBackgroundImage'] ) ) {
-		$reveal_settings['parallaxBackgroundImage'] = wp_get_attachment_url( $reveal_settings['parallaxBackgroundImage'] );
+		$reveal_settings['parallaxBackgroundImage'] = esc_url( wp_get_attachment_url( $reveal_settings['parallaxBackgroundImage'] ) );
 	}
 
 	// Sanitize dropdown values
