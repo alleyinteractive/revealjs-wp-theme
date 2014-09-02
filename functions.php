@@ -561,7 +561,7 @@ function reveal_default_settings() {
 }
 
 function reveal_tiny_mce_before_init( $options ) {
-	$options['external_plugins']['code'] = get_stylesheet_directory_uri() . '/js/tinymce.code.js';
+	$options['external_plugins']['code'] = REVEAL_PARENT_THEME_URI . '/js/tinymce.code.js';
 	$options['toolbar2'] = 'styleselect,' . $options['toolbar2'];
 	// $options['theme_advanced_styles'] = 'Fragment=fragment';
 	$options['style_formats'] = array(
