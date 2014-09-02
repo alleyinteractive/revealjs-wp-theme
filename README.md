@@ -59,6 +59,9 @@ custom theme URL.
 		'notes'     => "{ src: '" . get_template_directory_uri() . "/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }",
 	)
 	```
+* `reveal_default_settings`: Manipulate the default settings.
+See `reveal_default_settings()` functions.php for the values.
+
 
 ### Other Customizations
 
