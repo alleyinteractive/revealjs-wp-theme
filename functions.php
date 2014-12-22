@@ -204,8 +204,6 @@ function reveal_slides() {
 		)
 	) );
 	$fm->add_meta_box( __( 'Wrapper Slide Options', 'reveal' ), 'slide' );
-
-	add_filter( 'tiny_mce_before_init', 'reveal_tiny_mce_before_init' );
 }
 
 function reveal_settings() {
@@ -558,16 +556,6 @@ function reveal_default_settings() {
 		'rollingLinks'                   => false,
 		'focusBodyOnPageVisiblityChange' => true,
 	) );
-}
-
-function reveal_tiny_mce_before_init( $options ) {
-	$options['external_plugins']['code'] = REVEAL_PARENT_THEME_URI . '/js/tinymce.code.js';
-	$options['toolbar2'] = 'styleselect,' . $options['toolbar2'];
-	// $options['theme_advanced_styles'] = 'Fragment=fragment';
-	$options['style_formats'] = array(
-		array( 'title' => 'Fragment', 'selector' => 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img', 'classes' => 'fragment' )
-	);
-	return $options;
 }
 
 function reveal_homepage_slides( &$query ) {
