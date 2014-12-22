@@ -157,10 +157,12 @@ function reveal_remove_admin_bar_links() {
 
 function reveal_slides() {
 	$attr_group = new Fieldmanager_Group( array(
-		'label'          => __( 'Slide HTML Attributes', 'reveal' ),
+		'label'          => __( 'Slide HTML Attribute', 'reveal' ),
 		'limit'          => 0,
 		'extra_elements' => 0,
-		'add_more_label' => __( 'Add attribute', 'reveal' ),
+		'collapsible'    => true,
+		'collapsed'      => true,
+		'add_more_label' => __( 'Add HTML attribute', 'reveal' ),
 		'label_macro'    => array( __( '%s', 'reveal' ), 'key' ),
 		'children'       => array(
 			'key' => new Fieldmanager_TextField( __( 'Attribute Name', 'reveal' ) ),
@@ -181,6 +183,7 @@ function reveal_slides() {
 		'label'          => __( 'Slide', 'reveal' ),
 		'limit'          => 0,
 		'extra_elements' => 0,
+		'starting_count' => 1,
 		'add_more_label' => __( 'Add vertical slide', 'reveal' ),
 		'label_macro'    => array( __( '%s', 'reveal' ), 'title' ),
 		'sortable'       => true,
