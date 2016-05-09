@@ -1,6 +1,6 @@
 <?php
 
-define( 'REVEAL_VERSION', '2.6.2' );
+define( 'REVEAL_VERSION', '3.3.0' );
 define( 'REVEAL_PARENT_THEME_URI', get_template_directory_uri() );
 
 function reveal_setup_theme() {
