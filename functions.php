@@ -221,13 +221,16 @@ function reveal_settings() {
 				'options' => array(
 					'default',
 					'beige',
+					'black',
 					'blood',
+					'league',
 					'moon',
 					'night',
 					'serif',
 					'simple',
 					'sky',
 					'solarized',
+					'white',
 				)
 			) ),
 			'controls' => new Fieldmanager_Checkbox( array(
