@@ -571,6 +571,19 @@ function reveal_homepage_slides( &$query ) {
 	}
 }
 
+function reveal_fm_check_admin_notice__error() {
+	
+	if( !defined( 'FM_VERSION' ) ){
+    ?>
+ 
+    <div class="notice notice-error is-dismissible">
+        <p><?php _e( '<strong>Plugin Required:</strong> Please install the <a href="https://github.com/alleyinteractive/wordpress-fieldmanager">Fieldmanager Plugin </a> to use the reveal.js for WordPress theme.', 'reveal' ); ?></p>
+    </div>
+    <?php
+	    }
+}
+add_action( 'admin_notices', 'reveal_fm_check_admin_notice__error' );
+
 
 /**
  * Template Tags
