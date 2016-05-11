@@ -196,7 +196,7 @@ function reveal_slides() {
 			'notes' => new Fieldmanager_RichTextArea( __( 'Notes', 'reveal' ) ),
 		)
 	) );
-	$fm->add_meta_box( __( 'Vertical Slides', 'reveal' ), 'slide' );
+	$fm->add_meta_box( __( 'Slides', 'reveal' ), 'slide' );
 
 	$fm = new Fieldmanager_Group( array(
 		'name'           => 'wrapper',
