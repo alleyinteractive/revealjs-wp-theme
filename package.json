@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "underscore": "~1.8.3",
-    "express": "~4.16.2",
+    "express": "~4.17.3",
     "mustache": "~2.2.1",
     "socket.io": "~2.0.4"
   },
